@@ -1,19 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+import { Grid, Row, Col } from 'react-bootstrap';
+
+import Questions from './Questions';
+import Tokens from './Tokens';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Router>
+
+        <Grid>
+          <Row>
+
+            <Col sm={6}>
+              <h1 className="text-center big-text">Tokens</h1>
+              <Tokens />
+            </Col>
+
+            <Col sm={6}>
+              <h1 className="text-center big-text">Questions</h1>
+              <Questions />
+            </Col>
+
+          </Row>
+        </Grid>
+        
+      </Router>
     );
   }
 }
