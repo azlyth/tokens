@@ -21,7 +21,7 @@ class Application:
 
     def configure_database(self):
         self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-        configure_database(self.app)
+        self.db = configure_database(self.app)
 
     def run(self):
         self.app.run(host='0.0.0.0')

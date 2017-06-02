@@ -10,5 +10,8 @@ RUN pip install -r requirements.txt
 ADD . /srv/
 WORKDIR /srv/
 
+# Initialize the database
+RUN ./manage.py init_db
+
 # Run the app
-CMD ./main.py
+CMD ./manage.py run
