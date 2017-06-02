@@ -13,14 +13,17 @@ class Application:
         self.app = Flask(__name__)
         self.api = Api(self.app)
 
+        self.import_configuration()
         self.add_routes()
         self.configure_database()
+
+    def import_configuration(self):
+        self.app.config.from_object('core.settings')
 
     def add_routes(self):
         self.api.add_resource(QuestionList, '/')
 
     def configure_database(self):
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
         self.db = configure_database(self.app)
 
     def run(self):
