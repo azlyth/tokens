@@ -9,30 +9,30 @@ from .db import configure_database
 class Application:
 
     def __init__(self):
-        self.app = Flask(__name__)
-        self.api = Api(self.app)
+        self.flask_app = Flask(__name__)
+        self.api = Api(self.flask_app)
 
         self.import_configuration()
         self.configure_database()
         self.setup_api()
 
     def import_configuration(self):
-        self.app.config.from_object('core.settings')
-
-    def setup_api(self):
-        # Load the module here to avoid circular dependencies
-        from .api import ROUTES, login_manager
-
-        # Setup the login manager
-        self.login_manager = login_manager
-        self.login_manager.init_app(self.app)
-
-        # Add the routes
-        for resource, route in ROUTES:
-            self.api.add_resource(resource, route)
+        self.flask_app.config.from_object('core.settings')
 
     def configure_database(self):
-        self.db = configure_database(self.app)
+        self.db = configure_database(self.flask_app)
+
+    def setup_api(self):
+        from .api import setup_api
+        setup_api(self)
+
+    def bootstrap(self):
+        from .models import User
+        self.db.session.add(User('peter', 'asdf'))
+        self.db.session.commit()
 
     def run(self):
-        self.app.run(host='0.0.0.0')
+        if self.flask_app.config['DEBUG']:
+            self.bootstrap()
+
+        self.flask_app.run(host='0.0.0.0')
