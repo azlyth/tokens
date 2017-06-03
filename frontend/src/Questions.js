@@ -1,26 +1,57 @@
 import React from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Button, FormControl, Row, Col } from 'react-bootstrap';
 
 import API from './api';
 import './Questions.css';
 
 
-let Question = (props) => {
-  let answer = x => API.Question.answer(props.question.id, x)
+class Question extends React.Component {
 
-  return (
-    <Row className="question">
-      <Col sm={12} className="text-center mid-text">
-        <p>{props.question.text}</p>
-        <p className="mid-text">
-          <Button onClick={() => answer('yes')}>YES</Button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button onClick={() => answer('no')}>NO</Button>
-        </p>
-      </Col>
-    </Row>
-  );
-};
+  render() {
+    let question = this.props.question;
+    let questionText;
+
+    let answer = x => {
+      // Submit the answer
+      API.Question.answer(question.id, x).then(() =>
+        // Refresh the categories when we're done answering
+        API.Category.all().then(result =>
+          this.props.refreshCategories(result.objects)
+        )
+      )
+    }
+
+    // TODO: Make editable if logged in
+    if (true) {
+      questionText = (
+        <p>{question.text}</p>
+      );
+    } else {
+      questionText = (
+        <FormControl
+          type="text"
+          className="text-center mid-text"
+          value={question.text}
+          placeholder="Enter a question..."
+        />
+      );
+    }
+
+    return (
+      <Row className="question">
+        <Col sm={12} className="text-center mid-text">
+          {questionText}
+          <p className="mid-text">
+            <Button onClick={() => answer('yes')}>YES</Button>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+            <Button onClick={() => answer('no')}>NO</Button>
+          </p>
+        </Col>
+      </Row>
+    );
+  }
+}
 
 
 class Questions extends React.Component {
@@ -31,19 +62,37 @@ class Questions extends React.Component {
 
     // Get the questions from the API
     API.Question.all().then(result =>
-      this.setState({ questions: result.objects })
+      this.props.refreshQuestions(result.objects)
     );
   }
 
   render() {
     return (
       <div>
-        {this.state.questions.map(question => 
-          <Question key={question.id} question={question} />
+        {this.props.questions.map(question => 
+          <Question
+            key={question.id}
+            question={question}
+            refreshCategories={this.props.refreshCategories}
+          />
         )}
       </div>
     );
   }
 }
 
-export default Questions;
+
+let mapState = state => {
+  return { questions: state.questions };
+}
+
+let mapDispatch = dispatch => {
+  return {
+    refreshQuestions: questions => dispatch({type: 'REFRESH_QUESTIONS', questions }),
+    refreshCategories: categories => dispatch({type: 'REFRESH_CATEGORIES', categories })
+  };
+}
+
+const QuestionsWithData = connect(mapState, mapDispatch)(Questions);
+
+export default QuestionsWithData;

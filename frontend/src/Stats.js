@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 
 import API from './api';
@@ -16,10 +17,8 @@ class Stats extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { categories: [] };
-
     API.Category.all().then(result =>
-      this.setState({ categories: result.objects })
+      this.props.refreshCategories(result.objects)
     );
   }
 
@@ -27,7 +26,7 @@ class Stats extends React.Component {
     return (
         <Row>
           <Col sm={12} className="text-center mid-text">
-            {this.state.categories.map(category =>
+            {this.props.categories.map(category =>
               <Category key={category.id} category={category}/>
             )}
           </Col>
@@ -36,4 +35,16 @@ class Stats extends React.Component {
   }
 }
 
-export default Stats;
+let mapState = state => {
+  return { categories: state.categories };
+}
+
+let mapDispatch = dispatch => {
+  return {
+    refreshCategories: categories => dispatch({type: 'REFRESH_CATEGORIES', categories })
+  };
+}
+
+const StatsWithData = connect(mapState, mapDispatch)(Stats);
+
+export default StatsWithData;
