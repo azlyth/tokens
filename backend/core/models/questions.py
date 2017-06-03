@@ -5,15 +5,18 @@ from ..db import db
 class Question(Model):
 
     text = db.Column(db.Unicode)
+    yes = db.Column(db.Integer, default=0)
+    no = db.Column(db.Integer, default=0)
 
 
-class Choice(Model):
+class Category(Model):
 
-    text = db.Column(db.Unicode)
+    name = db.Column(db.Unicode)
+
+
+class QuestionWeight(Model):
+
     question = ForeignKey('question.id')
-
-
-class Answer(Model):
-
-    user = ForeignKey('user.id')
-    choice = ForeignKey('choice.id')
+    category = ForeignKey('category.id')
+    yes_weight = db.Column(db.Integer, default=0)
+    no_weight = db.Column(db.Integer, default=0)

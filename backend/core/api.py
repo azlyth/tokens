@@ -6,7 +6,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user
 from flask_restful import Resource
 from flask_restless import APIManager, ProcessingException
 
-from .models import Question, User
+from .models import Category, Question, User
 
 
 def authenticate(*args, **kwargs):
@@ -40,7 +40,15 @@ def setup_api(app):
     manager.create_api(
         Question,
         preprocessors={
-            'GET_SINGLE': [authenticate],
+            'POST': [authenticate],
+            'PUT': [authenticate],
+            'DELETE': [authenticate]
+        },
+        methods=['GET', 'POST', 'PUT', 'DELETE']
+    )
+    manager.create_api(
+        Category,
+        preprocessors={
             'POST': [authenticate],
             'PUT': [authenticate],
             'DELETE': [authenticate]
