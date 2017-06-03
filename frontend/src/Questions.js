@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button, FormControl, Row, Col, Glyphicon } from 'react-bootstrap';
 
 import API from './api';
+import NewInstance from './components/NewInstance';
 import './Questions.css';
 
 
@@ -23,7 +24,9 @@ class Question extends React.Component {
 
   render() {
     let question = this.props.question;
+
     let questionText;
+    let buttons;
 
     let answer = x => {
       // Submit the answer
@@ -41,25 +44,33 @@ class Question extends React.Component {
         <FormControl
           type="text"
           className="question-input text-center mid-text"
-          placeholder="Enter a question..."
+          placeholder="Question"
           value={this.state.text}
           onChange={this.updateQuestionText}
         />
       );
+      buttons = (
+        <p className="mid-text">
+          <Button onClick={() => alert('saved')}>SAVE</Button>
+        </p>
+      );
     } else {
       questionText = (
         <p>{question.text}</p>
+      );
+      buttons = (
+        <p className="mid-text">
+          <Button onClick={() => answer('yes')}>YES</Button>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+          <Button onClick={() => answer('no')}>NO</Button>
+        </p>
       );
     }
 
     return (
       <div className="question text-center mid-text">
         {questionText}
-        <p className="mid-text">
-          <Button onClick={() => answer('yes')}>YES</Button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button onClick={() => answer('no')}>NO</Button>
-        </p>
+        {buttons}
       </div>
     );
   }
@@ -78,6 +89,13 @@ class Questions extends React.Component {
     );
   }
 
+  renderCreateButton() {
+    // Show the question creation button if editing
+    if (this.props.editing) {
+      return <NewInstance />;
+    }
+  }
+
   render() {
     return (
       <div>
@@ -87,7 +105,7 @@ class Questions extends React.Component {
             glyph="pencil"
             onClick={this.props.toggleEditing}
           />
-      </h1>
+        </h1>
         {this.props.questions.map(question => 
           <Question
             key={question.id}
@@ -96,6 +114,7 @@ class Questions extends React.Component {
             refreshCategories={this.props.refreshCategories}
           />
         )}
+        {this.renderCreateButton()}
       </div>
     );
   }
