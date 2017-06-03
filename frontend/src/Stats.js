@@ -14,10 +14,20 @@ class Category extends React.Component {
     this.state = {
       text: props.category.name
     };
+
+    this.updateCategoryText = this.updateCategoryText.bind(this);
+    this.saveCategory = this.saveCategory.bind(this);
   }
 
   updateCategoryText(event) {
     this.setState({ text: event.target.value });
+  }
+
+  saveCategory() {
+    API.Category.save({
+      id: this.props.category.id,
+      name: this.state.text
+    }).then(this.props.refreshCategories);
   }
 
   render() {
@@ -38,7 +48,7 @@ class Category extends React.Component {
             />
             <Button
               className="category-save"
-              onClick={() => alert('saved')}>
+              onClick={this.saveCategory}>
               SAVE
             </Button>
           </Form>
@@ -65,9 +75,7 @@ class Stats extends React.Component {
 
   constructor(props) {
     super(props);
-    API.Category.all().then(result =>
-      this.props.refreshCategories(result.objects)
-    );
+    this.props.refreshCategories();
   }
 
   renderCreateButton() {
@@ -86,6 +94,7 @@ class Stats extends React.Component {
             key={category.id}
             category={category}
             editing={this.props.editing}
+            refreshCategories={this.props.refreshCategories}
           />
         )}
         {this.renderCreateButton()}
@@ -103,7 +112,15 @@ let mapState = state => {
 
 let mapDispatch = dispatch => {
   return {
-    refreshCategories: categories => dispatch({type: 'REFRESH_CATEGORIES', categories })
+    refreshCategories: () => {
+      API.Category.all().then(result =>
+        dispatch({
+          type: 'REFRESH_CATEGORIES',
+          categories: result.objects
+        }),
+      )
+    },
+
   };
 }
 

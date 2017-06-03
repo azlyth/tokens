@@ -28,7 +28,7 @@ class Question extends React.Component {
     API.Question.save({
       id: this.props.question.id,
       text: this.state.text
-    }).then(this.props.refreshQuestions)
+    }).then(this.props.refreshQuestions);
   }
 
   render() {
