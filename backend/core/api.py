@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import request
+from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, logout_user
 from flask_restful import Resource
 from flask_restless import APIManager, ProcessingException
@@ -14,6 +15,9 @@ def authenticate(*args, **kwargs):
 
 
 def setup_api(app):
+    # Setup CORS
+    CORS(app.flask_app)
+
     # Initialize the login manager
     login_manager = LoginManager()
     login_manager.init_app(app.flask_app)
