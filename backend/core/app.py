@@ -29,18 +29,16 @@ class Application:
     def bootstrap(self):
         from .models import User, Question, Category
         if not Question.find_all():
-            self.db.session.add(User('peter', 'asdf'))
+            User.create('peter', 'asdf')
 
-            self.db.session.add(Question(text='Is this what you want?'))
-            self.db.session.add(Question(text='Really?'))
-            self.db.session.add(Question(text='Are you sure?'))
+            Question.create(text='Is this what you want?')
+            Question.create(text='Really?')
+            Question.create(text='Are you sure?')
 
-            self.db.session.add(Category(name='Strength'))
-            self.db.session.add(Category(name='Dexterity'))
-            self.db.session.add(Category(name='Intelligence'))
-            self.db.session.add(Category(name='Luck'))
-
-            self.db.session.commit()
+            Category.create(name='Strength')
+            Category.create(name='Dexterity')
+            Category.create(name='Intelligence')
+            Category.create(name='Luck')
 
     def run(self):
         if self.flask_app.config['DEBUG']:

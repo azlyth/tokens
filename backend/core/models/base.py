@@ -36,6 +36,15 @@ class Model(db.Model):
     def find_all(cls, **kw):
         return cls._create_query(kw).all()
 
+    @classmethod
+    def find_or_create(cls, **kw):
+        return cls.find_one(**kw) or cls.create(**kw)
+
+    @classmethod
+    def create(cls, *args, **kw):
+        instance = cls(*args, **kw)
+        instance.save()
+
     def save(self):
         db.session.add(self)
         db.session.commit()

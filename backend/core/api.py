@@ -6,7 +6,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user
 from flask_restful import Resource
 from flask_restless import APIManager, ProcessingException
 
-from .models import Category, Question, User
+from .models import Category, Question, User, QuestionWeight
 
 
 def authenticate(*args, **kwargs):
@@ -95,12 +95,15 @@ class AnswerResource(Resource):
         if not question:
             return {'error': 'No such question'}, 404
 
-        # Update the answer count
+        # Validate the answer
         answer = request.get_json().get('answer')
-        if answer == 'yes':
-            question.yes += 1
-        elif answer == 'no':
-            question.no += 1
-        question.save()
+        if answer not in ['yes', 'no']:
+            return {'error': 'Invalid answer'}, 400
+
+        # Update the category scores appropriately
+        for weight in question.weights:
+            category = weight.category
+            category.score += getattr(weight, answer)
+            category.save()
 
         return {'data': 'success'}

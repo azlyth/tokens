@@ -7,7 +7,7 @@ import './Stats.css';
 
 const Category = (props) => {
   return (
-    <p className="category">{props.category.name}: 0</p>
+    <p className="category">{props.category.name}: {props.category.score}</p>
   );
 };
 
