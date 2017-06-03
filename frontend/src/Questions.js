@@ -217,10 +217,6 @@ class Questions extends React.Component {
       <div>
         <h1 className="text-center big-text">
           Questions
-          <Glyphicon
-            glyph="pencil"
-            onClick={this.props.toggleEditing}
-          />
         </h1>
         {questions.map(question => 
           <Question
@@ -265,8 +261,6 @@ let mapDispatch = dispatch => {
         }),
       )
     },
-
-    toggleEditing: () => dispatch({ type: 'TOGGLE_EDITING' })
   };
 }
 

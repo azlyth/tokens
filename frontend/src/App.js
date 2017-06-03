@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 
 import Questions from './Questions';
 import Stats from './Stats';
+import Menu from './components/Menu';
 import store from './store';
 
 
@@ -16,8 +17,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-
+      
           <Grid>
+            <Menu />
+
             <Row>
 
               <Col sm={6}>
