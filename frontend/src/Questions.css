@@ -3,3 +3,8 @@
   margin: 20px;
   padding: 12px;
 }
+
+.question-input {
+  padding: 5px;
+  height: 42px;
+}

@@ -1,12 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, FormControl, Row, Col } from 'react-bootstrap';
+import { Button, FormControl, Row, Col, Glyphicon } from 'react-bootstrap';
 
 import API from './api';
 import './Questions.css';
 
 
 class Question extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: props.question.text
+    };
+
+    this.updateQuestionText = this.updateQuestionText.bind(this);
+  }
+
+  updateQuestionText(event) {
+    this.setState({ text: event.target.value });
+  }
 
   render() {
     let question = this.props.question;
@@ -22,33 +35,32 @@ class Question extends React.Component {
       )
     }
 
-    // TODO: Make editable if logged in
-    if (true) {
-      questionText = (
-        <p>{question.text}</p>
-      );
-    } else {
+    // Make editable if logged in
+    if (this.props.editing) {
       questionText = (
         <FormControl
           type="text"
-          className="text-center mid-text"
-          value={question.text}
+          className="question-input text-center mid-text"
           placeholder="Enter a question..."
+          value={this.state.text}
+          onChange={this.updateQuestionText}
         />
+      );
+    } else {
+      questionText = (
+        <p>{question.text}</p>
       );
     }
 
     return (
-      <Row className="question">
-        <Col sm={12} className="text-center mid-text">
-          {questionText}
-          <p className="mid-text">
-            <Button onClick={() => answer('yes')}>YES</Button>
-            <span>&nbsp;&nbsp;&nbsp;</span>
-            <Button onClick={() => answer('no')}>NO</Button>
-          </p>
-        </Col>
-      </Row>
+      <div className="question text-center mid-text">
+        {questionText}
+        <p className="mid-text">
+          <Button onClick={() => answer('yes')}>YES</Button>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+          <Button onClick={() => answer('no')}>NO</Button>
+        </p>
+      </div>
     );
   }
 }
@@ -69,10 +81,18 @@ class Questions extends React.Component {
   render() {
     return (
       <div>
+        <h1 className="text-center big-text">
+          Questions
+          <Glyphicon
+            glyph="pencil"
+            onClick={this.props.toggleEditing}
+          />
+      </h1>
         {this.props.questions.map(question => 
           <Question
             key={question.id}
             question={question}
+            editing={this.props.editing}
             refreshCategories={this.props.refreshCategories}
           />
         )}
@@ -83,13 +103,17 @@ class Questions extends React.Component {
 
 
 let mapState = state => {
-  return { questions: state.questions };
+  return {
+    questions: state.questions,
+    editing: state.editing
+  };
 }
 
 let mapDispatch = dispatch => {
   return {
-    refreshQuestions: questions => dispatch({type: 'REFRESH_QUESTIONS', questions }),
-    refreshCategories: categories => dispatch({type: 'REFRESH_CATEGORIES', categories })
+    refreshQuestions: questions => dispatch({ type: 'REFRESH_QUESTIONS', questions }),
+    refreshCategories: categories => dispatch({ type: 'REFRESH_CATEGORIES', categories }),
+    toggleEditing: () => dispatch({ type: 'TOGGLE_EDITING' })
   };
 }
 

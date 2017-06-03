@@ -8,7 +8,9 @@ import './Stats.css';
 
 const Category = (props) => {
   return (
-    <p className="category">{props.category.name}: {props.category.score}</p>
+    <p className="category mid-text text-center">
+      {props.category.name}: {props.category.score}
+    </p>
   );
 };
 
@@ -24,13 +26,12 @@ class Stats extends React.Component {
 
   render() {
     return (
-        <Row>
-          <Col sm={12} className="text-center mid-text">
-            {this.props.categories.map(category =>
-              <Category key={category.id} category={category}/>
-            )}
-          </Col>
-        </Row>
+      <div>
+        <h1 className="text-center big-text">Stats</h1>
+        {this.props.categories.map(category =>
+          <Category key={category.id} category={category}/>
+        )}
+      </div>
     );
   }
 }
