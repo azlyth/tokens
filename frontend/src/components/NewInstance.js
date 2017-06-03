@@ -35,7 +35,7 @@ class InstanceInput extends React.Component {
 
   render() {
     return (
-      <div className="question text-center mid-text">
+      <div className="question question-container text-center mid-text">
         <FormControl
           type="text"
           className="question-input text-center mid-text"

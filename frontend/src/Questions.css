@@ -1,10 +1,17 @@
+.question-container {
+  margin: 40px;
+}
+
 .question {
+  padding: 20px;
   border: 1px solid;
-  margin: 20px;
-  padding: 12px;
 }
 
 .question-input {
   padding: 5px;
   height: 42px;
+}
+
+.table-title {
+  margin: 10px;
 }
