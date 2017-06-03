@@ -25,11 +25,11 @@ class Questions extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { questions: [] }
+    this.state = { questions: [] };
 
     // Get the questions from the API
     API.Question.all().then(result =>
-      this.setState({questions: result.objects})
+      this.setState({ questions: result.objects })
     );
   }
 

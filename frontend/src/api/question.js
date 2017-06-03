@@ -1,11 +1,9 @@
-import { callBackend } from './utils';
+import { Backend } from './utils';
 
 class Question {
 
   static all() {
-    return new Promise((resolve, reject) => {
-      callBackend('/api/question').then(response => resolve(response))
-    });
+    return Backend.get('/api/question');
   }
 
 }
