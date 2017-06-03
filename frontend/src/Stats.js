@@ -84,7 +84,7 @@ class Stats extends React.Component {
     if (this.props.editing) {
       return (
         <NewInstance
-          handleCreate={text => API.Category.create({text}).then(this.props.refreshCategories)}
+          handleCreate={name => API.Category.create({name}).then(this.props.refreshCategories)}
           placeholder="Enter a new category"
         />
       );

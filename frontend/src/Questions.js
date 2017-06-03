@@ -103,7 +103,6 @@ class Questions extends React.Component {
     if (this.props.editing) {
       return (
         <NewInstance
-          model={API.Question}
           handleCreate={text => API.Question.create({text}).then(this.props.refreshQuestions)}
           placeholder="Enter a new question"
         />
