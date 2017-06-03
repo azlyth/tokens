@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
+import API from './api';
 import './Questions.css';
 
 
@@ -26,6 +27,7 @@ class Questions extends React.Component {
 
   constructor(props) {
     super(props);
+    API.Question.all().then(console.log);
   }
 
   render() {
