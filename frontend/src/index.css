@@ -13,3 +13,7 @@ body {
 .mid-text {
   font-size: 3rem;
 }
+
+.category .btn, .question .btn {
+  width: 100px;
+}

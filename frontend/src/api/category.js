@@ -1,6 +1,6 @@
 import { Backend } from './utils';
 
-class Question {
+class Category {
 
   static all() {
     return Backend.get('/api/category');
@@ -11,6 +11,11 @@ class Question {
     return Backend.put(url, data);
   }
 
+  static delete(data) {
+    let url = '/api/category/' + data.id;
+    return Backend.delete(url);
+  }
+
 }
 
-export default Question;
+export default Category;

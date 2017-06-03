@@ -2,7 +2,7 @@ let BASE_URL = 'http://localhost:5000';
 
 class Backend {
 
-  static _call(path, method, data) {
+  static _call(path, method, data, noJSON) {
     return new Promise((resolve, reject) => {
       // Configure the request
       let headers = new Headers();
@@ -11,7 +11,13 @@ class Backend {
       let options = { headers, method, body: JSON.stringify(data)};
 
       // Make the call
-      fetch(BASE_URL + path, options).then(x => x.json().then(data => resolve(data)))
+      fetch(BASE_URL + path, options).then(response => {
+        if (noJSON) {
+          resolve(response);
+        } else {
+          response.json().then(data => resolve(data))
+        }
+      })
     });
   }
 
@@ -25,6 +31,10 @@ class Backend {
 
   static put(path, data) {
     return this._call(path, 'PUT', data);
+  }
+
+  static delete(path) {
+    return this._call(path, 'DELETE', null, true);
   }
 
 }

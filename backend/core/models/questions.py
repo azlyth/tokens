@@ -11,7 +11,9 @@ class Question(Model):
 
     text = db.Column(db.Unicode)
 
-    weights = db.relationship('QuestionWeight', backref='question')
+    weights = db.relationship('QuestionWeight',
+                              backref='question',
+                              cascade='all, delete-orphan')
 
     def save(self):
         super(Question, self).save()
@@ -29,7 +31,9 @@ class Category(Model):
     name = db.Column(db.Unicode)
     score = db.Column(db.Integer, default=0)
 
-    weights = db.relationship('QuestionWeight', backref='category')
+    weights = db.relationship('QuestionWeight',
+                              backref='category',
+                              cascade='all, delete-orphan')
 
     def save(self):
         super(Category, self).save()

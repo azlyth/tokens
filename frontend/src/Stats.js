@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Form, FormControl } from 'react-bootstrap';
+import { Button, FormControl } from 'react-bootstrap';
 
 import API from './api';
 import NewInstance from './components/NewInstance';
@@ -17,6 +17,7 @@ class Category extends React.Component {
 
     this.updateCategoryText = this.updateCategoryText.bind(this);
     this.saveCategory = this.saveCategory.bind(this);
+    this.deleteCategory = this.deleteCategory.bind(this);
   }
 
   updateCategoryText(event) {
@@ -30,6 +31,10 @@ class Category extends React.Component {
     }).then(this.props.refreshCategories);
   }
 
+  deleteCategory() {
+    API.Category.delete(this.props.category).then(this.props.refreshCategories);
+  }
+
   render() {
     let category = this.props.category;
 
@@ -38,20 +43,16 @@ class Category extends React.Component {
     if (this.props.editing) {
       body = (
         <div>
-          <Form inline>
-            <FormControl
-              type="text"
-              className="category-input text-center mid-text"
-              placeholder="Category"
-              value={this.state.text}
-              onChange={this.updateCategoryText}
-            />
-            <Button
-              className="category-save"
-              onClick={this.saveCategory}>
-              SAVE
-            </Button>
-          </Form>
+          <FormControl
+            type="text"
+            className="category-input text-center mid-text"
+            placeholder="Category"
+            value={this.state.text}
+            onChange={this.updateCategoryText}
+          />
+          <Button onClick={this.saveCategory}>SAVE</Button>
+          <span>&nbsp;&nbsp;</span>
+          <Button onClick={this.deleteCategory}>DELETE</Button>
         </div>
       );
     } else {

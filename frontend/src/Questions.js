@@ -17,6 +17,7 @@ class Question extends React.Component {
 
     this.updateQuestionText = this.updateQuestionText.bind(this);
     this.saveQuestion = this.saveQuestion.bind(this);
+    this.deleteQuestion = this.deleteQuestion.bind(this);
   }
 
   updateQuestionText(event) {
@@ -29,6 +30,10 @@ class Question extends React.Component {
       id: this.props.question.id,
       text: this.state.text
     }).then(this.props.refreshQuestions);
+  }
+
+  deleteQuestion() {
+    API.Question.delete(this.props.question).then(this.props.refreshQuestions);
   }
 
   render() {
@@ -56,6 +61,8 @@ class Question extends React.Component {
       buttons = (
         <p className="mid-text">
           <Button onClick={this.saveQuestion}>SAVE</Button>
+          <span>&nbsp;&nbsp;</span>
+          <Button onClick={this.deleteQuestion}>DELETE</Button>
         </p>
       );
     } else {
