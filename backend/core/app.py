@@ -27,9 +27,13 @@ class Application:
         setup_api(self)
 
     def bootstrap(self):
-        from .models import User
-        self.db.session.add(User('peter', 'asdf'))
-        self.db.session.commit()
+        from .models import User, Question
+        if not Question.find_all():
+            self.db.session.add(User('peter', 'asdf'))
+            self.db.session.add(Question(text='Really?'))
+            self.db.session.add(Question(text='Is this what you want?'))
+            self.db.session.add(Question(text='Are you sure?'))
+            self.db.session.commit()
 
     def run(self):
         if self.flask_app.config['DEBUG']:
