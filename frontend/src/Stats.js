@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import API from './api';
-import './Tokens.css';
+import './Stats.css';
 
 
 const Category = (props) => {
@@ -12,7 +12,7 @@ const Category = (props) => {
 };
 
 
-class Tokens extends React.Component {
+class Stats extends React.Component {
 
   constructor(props) {
     super(props);
@@ -36,4 +36,4 @@ class Tokens extends React.Component {
   }
 }
 
-export default Tokens;
+export default Stats;

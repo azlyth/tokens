@@ -5,7 +5,7 @@ import {
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import Questions from './Questions';
-import Tokens from './Tokens';
+import Stats from './Stats';
 
 class App extends Component {
   render() {
@@ -16,13 +16,13 @@ class App extends Component {
           <Row>
 
             <Col sm={6}>
-              <h1 className="text-center big-text">Tokens</h1>
-              <Tokens />
+              <h1 className="text-center big-text">Questions</h1>
+              <Questions />
             </Col>
 
             <Col sm={6}>
-              <h1 className="text-center big-text">Questions</h1>
-              <Questions />
+              <h1 className="text-center big-text">Stats</h1>
+              <Stats />
             </Col>
 
           </Row>
