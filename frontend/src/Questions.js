@@ -5,40 +5,40 @@ import API from './api';
 import './Questions.css';
 
 
-class Question extends React.Component {
-  render() {
-    return (
-        <Row>
-          <Col sm={12} className="text-center mid-text">
-            <p>Is that what you want?</p>
-            <p className="mid-text">
-              <span>yes</span>
-              <span>&nbsp;&nbsp;&nbsp;</span>
-              <span>no</span>
-            </p>
-          </Col>
-        </Row>
-    );
-  }
-}
+let Question = (props) => {
+  return (
+    <Row className="question">
+      <Col sm={12} className="text-center mid-text">
+        <p>{props.question.text}</p>
+        <p className="mid-text">
+          <span>yes</span>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+          <span>no</span>
+        </p>
+      </Col>
+    </Row>
+  );
+};
 
 
 class Questions extends React.Component {
 
   constructor(props) {
     super(props);
-    API.Question.all().then(console.log);
+    this.state = { questions: [] }
+
+    // Get the questions from the API
+    API.Question.all().then(result =>
+      this.setState({questions: result.objects})
+    );
   }
 
   render() {
     return (
       <div>
-        <br /> 
-        <Question></Question>
-        <br /> 
-        <Question></Question>
-        <br /> 
-        <Question></Question>
+        {this.state.questions.map(question => 
+          <Question key={question.id} question={question} />
+        )}
       </div>
     );
   }
