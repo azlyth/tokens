@@ -58,6 +58,11 @@ def setup_api(app):
         },
         methods=['GET', 'POST', 'PUT', 'DELETE']
     )
+    manager.create_api(
+        QuestionWeight,
+        preprocessors={'PUT': [authenticate]},
+        methods=['PUT'],
+    )
 
 
 class AuthResource(Resource):

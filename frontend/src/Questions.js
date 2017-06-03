@@ -19,6 +19,7 @@ class Question extends React.Component {
     this.updateQuestionText = this.updateQuestionText.bind(this);
     this.saveQuestion = this.saveQuestion.bind(this);
     this.deleteQuestion = this.deleteQuestion.bind(this);
+    this.updateWeight = this.updateWeight.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -30,7 +31,10 @@ class Question extends React.Component {
   }
 
   saveQuestion() {
-    // Save the questions then refresh the questions
+    // Save the weights
+    this.state.weights.map(API.QuestionWeight.save);
+
+    // Save the question then refresh the questions
     API.Question.save({
       id: this.props.question.id,
       text: this.state.text
@@ -39,6 +43,18 @@ class Question extends React.Component {
 
   deleteQuestion() {
     API.Question.delete(this.props.question).then(this.props.refreshQuestions);
+  }
+
+  updateWeight(weight_id, mergeData) {
+    let newWeights = this.state.weights.map(w => {
+      let result = w;
+      if (w.id === weight_id) {
+        result = { ...w, ...mergeData};
+      }
+      return result;
+    })
+
+    this.setState({ weights: newWeights });
   }
 
   renderWeights() {
@@ -61,8 +77,22 @@ class Question extends React.Component {
                 return (
                   <tr key={weight.id}>
                     <td>{category}</td>
-                    <td>{weight.yes}</td>
-                    <td>{weight.no}</td>
+                    <td>
+                      <FormControl
+                        type="text"
+                        className="text-center sm-text"
+                        value={weight.yes}
+                        onChange={e => this.updateWeight(weight.id, { yes: e.target.value })}
+                      />
+                    </td>
+                    <td>
+                      <FormControl
+                        type="text"
+                        className="text-center sm-text"
+                        value={weight.no}
+                        onChange={e => this.updateWeight(weight.id, { no: e.target.value })}
+                      />
+                    </td>
                   </tr>
                 ) ;
               })}
