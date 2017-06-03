@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, FormControl, Row, Col, Glyphicon } from 'react-bootstrap';
+import { Button, FormControl, Glyphicon } from 'react-bootstrap';
 
 import API from './api';
 import NewInstance from './components/NewInstance';
@@ -16,10 +16,19 @@ class Question extends React.Component {
     };
 
     this.updateQuestionText = this.updateQuestionText.bind(this);
+    this.saveQuestion = this.saveQuestion.bind(this);
   }
 
   updateQuestionText(event) {
     this.setState({ text: event.target.value });
+  }
+
+  saveQuestion() {
+    // Save the questions then refresh the questions
+    API.Question.save({
+      id: this.props.question.id,
+      text: this.state.text
+    }).then(this.props.refreshQuestions)
   }
 
   render() {
@@ -30,12 +39,7 @@ class Question extends React.Component {
 
     let answer = x => {
       // Submit the answer
-      API.Question.answer(question.id, x).then(() =>
-        // Refresh the categories when we're done answering
-        API.Category.all().then(result =>
-          this.props.refreshCategories(result.objects)
-        )
-      )
+      API.Question.answer(question.id, x).then(this.props.refreshCategories);
     }
 
     // Make editable if logged in
@@ -51,7 +55,7 @@ class Question extends React.Component {
       );
       buttons = (
         <p className="mid-text">
-          <Button onClick={() => alert('saved')}>SAVE</Button>
+          <Button onClick={this.saveQuestion}>SAVE</Button>
         </p>
       );
     } else {
@@ -84,9 +88,7 @@ class Questions extends React.Component {
     this.state = { questions: [] };
 
     // Get the questions from the API
-    API.Question.all().then(result =>
-      this.props.refreshQuestions(result.objects)
-    );
+    this.props.refreshQuestions();
   }
 
   renderCreateButton() {
@@ -112,6 +114,7 @@ class Questions extends React.Component {
             question={question}
             editing={this.props.editing}
             refreshCategories={this.props.refreshCategories}
+            refreshQuestions={this.props.refreshQuestions}
           />
         )}
         {this.renderCreateButton()}
@@ -130,8 +133,24 @@ let mapState = state => {
 
 let mapDispatch = dispatch => {
   return {
-    refreshQuestions: questions => dispatch({ type: 'REFRESH_QUESTIONS', questions }),
-    refreshCategories: categories => dispatch({ type: 'REFRESH_CATEGORIES', categories }),
+    refreshQuestions: () => {
+      API.Question.all().then(result =>
+        dispatch({
+          type: 'REFRESH_QUESTIONS',
+          questions: result.objects
+        }),
+      )
+    },
+
+    refreshCategories: () => {
+      API.Category.all().then(result =>
+        dispatch({
+          type: 'REFRESH_CATEGORIES',
+          categories: result.objects
+        }),
+      )
+    },
+
     toggleEditing: () => dispatch({ type: 'TOGGLE_EDITING' })
   };
 }

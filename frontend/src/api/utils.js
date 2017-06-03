@@ -23,6 +23,10 @@ class Backend {
     return this._call(path, 'POST', data);
   }
 
+  static put(path, data) {
+    return this._call(path, 'PUT', data);
+  }
+
 }
 
 export { Backend };
