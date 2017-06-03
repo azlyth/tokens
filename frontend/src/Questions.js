@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 
 import API from './api';
 import './Questions.css';
@@ -13,9 +13,9 @@ let Question = (props) => {
       <Col sm={12} className="text-center mid-text">
         <p>{props.question.text}</p>
         <p className="mid-text">
-          <span onClick={() => answer('yes')}>yes</span>
+          <Button onClick={() => answer('yes')}>YES</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <span onClick={() => answer('no')}>no</span>
+          <Button onClick={() => answer('no')}>NO</Button>
         </p>
       </Col>
     </Row>
