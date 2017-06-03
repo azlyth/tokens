@@ -6,6 +6,10 @@ class Category {
     return Backend.get('/api/category');
   }
 
+  static create(data) {
+    return Backend.post('/api/category', data);
+  }
+
   static save(data) {
     let url = '/api/category/' + data.id;
     return Backend.put(url, data);

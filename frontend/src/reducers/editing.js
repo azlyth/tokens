@@ -1,4 +1,4 @@
-const editing = (state = false, action) => {
+const editing = (state = true, action) => {
   switch (action.type) {
     case 'TOGGLE_EDITING':
       return !state;

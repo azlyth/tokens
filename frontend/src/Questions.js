@@ -98,10 +98,16 @@ class Questions extends React.Component {
     this.props.refreshQuestions();
   }
 
-  renderCreateButton() {
+  newInstance() {
     // Show the question creation button if editing
     if (this.props.editing) {
-      return <NewInstance />;
+      return (
+        <NewInstance
+          model={API.Question}
+          handleCreate={text => API.Question.create({text}).then(this.props.refreshQuestions)}
+          placeholder="Enter a new question"
+        />
+      );
     }
   }
 
@@ -124,7 +130,7 @@ class Questions extends React.Component {
             refreshQuestions={this.props.refreshQuestions}
           />
         )}
-        {this.renderCreateButton()}
+        {this.newInstance()}
       </div>
     );
   }

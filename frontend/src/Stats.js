@@ -79,10 +79,15 @@ class Stats extends React.Component {
     this.props.refreshCategories();
   }
 
-  renderCreateButton() {
+  newInstance() {
     // Show the category creation button if editing
     if (this.props.editing) {
-      return <NewInstance />;
+      return (
+        <NewInstance
+          handleCreate={text => API.Category.create({text}).then(this.props.refreshCategories)}
+          placeholder="Enter a new category"
+        />
+      );
     }
   }
 
@@ -98,7 +103,7 @@ class Stats extends React.Component {
             refreshCategories={this.props.refreshCategories}
           />
         )}
-        {this.renderCreateButton()}
+        {this.newInstance()}
       </div>
     );
   }

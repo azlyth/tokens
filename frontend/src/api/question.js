@@ -1,9 +1,14 @@
 import { Backend } from './utils';
 
 class Question {
-
+  
   static all() {
     return Backend.get('/api/question');
+  }
+  
+  static create(data) {
+    console.log('posting', data);
+    return Backend.post('/api/question', data);
   }
 
   static save(data) {
