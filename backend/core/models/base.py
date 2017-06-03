@@ -35,3 +35,7 @@ class Model(db.Model):
     @classmethod
     def find_all(cls, **kw):
         return cls._create_query(kw).all()
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()

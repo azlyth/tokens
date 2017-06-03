@@ -35,6 +35,9 @@ def setup_api(app):
     # Add the auth endpoint
     app.api.add_resource(AuthResource, '/api/auth')
 
+    # Add the answer endpoint
+    app.api.add_resource(AnswerResource, '/api/question/<int:question_id>/answer')
+
     # Add the object endpoints
     manager = APIManager(app.flask_app, flask_sqlalchemy_db=app.db)
     manager.create_api(
@@ -65,11 +68,11 @@ class AuthResource(Resource):
         # Check if a valid user
         user = User.find_one(email=data['email'])
         if not user:
-            return {'error': 'invalid user/password combination'}
+            return {'error': 'Invalid credentials'}, 400
 
         # Check if valid password
         if not user.check_password(data['password']):
-            return {'error': 'invalid user/password combination'}
+            return {'error': 'Invalid credentials'}, 400
 
         login_user(user)
 
@@ -81,6 +84,23 @@ class AuthResource(Resource):
 
     def delete(self):
         logout_user()
-        return {
-            'data': {}
-        }
+        return {'data': 'success'}
+
+
+class AnswerResource(Resource):
+
+    def post(self, question_id):
+        # Get the question
+        question = Question.find_one(id=question_id)
+        if not question:
+            return {'error': 'No such question'}, 404
+
+        # Update the answer count
+        answer = request.get_json().get('answer')
+        if answer == 'yes':
+            question.yes += 1
+        elif answer == 'no':
+            question.no += 1
+        question.save()
+
+        return {'data': 'success'}

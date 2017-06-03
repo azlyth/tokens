@@ -6,14 +6,16 @@ import './Questions.css';
 
 
 let Question = (props) => {
+  let answer = x => API.Question.answer(props.question.id, x)
+
   return (
     <Row className="question">
       <Col sm={12} className="text-center mid-text">
         <p>{props.question.text}</p>
         <p className="mid-text">
-          <span>yes</span>
+          <span onClick={() => answer('yes')}>yes</span>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <span>no</span>
+          <span onClick={() => answer('no')}>no</span>
         </p>
       </Col>
     </Row>
