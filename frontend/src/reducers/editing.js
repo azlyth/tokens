@@ -3,6 +3,9 @@ const editing = (state = false, action) => {
     case 'TOGGLE_EDITING':
       return !state;
 
+    case 'DISABLE_EDITING':
+      return false;
+
     default:
       return state;
   }

@@ -5,6 +5,7 @@ import {
 import { Grid, Row, Col } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 
+import API from './api';
 import Questions from './Questions';
 import Stats from './Stats';
 import Menu from './components/Menu';
@@ -12,6 +13,13 @@ import store from './store';
 
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    // Check if the user is logged in
+    API.Auth.rehydrate();
+  }
 
   render() {
     return (

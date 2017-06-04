@@ -7,7 +7,6 @@ class Question {
   }
   
   static create(data) {
-    console.log('posting', data);
     return Backend.post('/api/question', data);
   }
 

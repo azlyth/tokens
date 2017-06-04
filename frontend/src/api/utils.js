@@ -1,4 +1,9 @@
-let BASE_URL = 'http://localhost:5000';
+import Cookies from 'js-cookie';
+
+
+const BASE_URL = 'http://localhost:5000';
+const TOKEN_HEADER = 'X-Session-Token';
+
 
 class Backend {
 
@@ -6,16 +11,27 @@ class Backend {
     return new Promise((resolve, reject) => {
       // Configure the request
       let headers = new Headers();
-      headers.append('X-Session-Token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.dJQCdaC-eSkYPYTekRUQNMINNc9xYuzookDS77znKAM')
       headers.append('Content-Type', 'application/json')
-      let options = { headers, method, body: JSON.stringify(data)};
+
+      // Add the session token if we have one
+      let token = Cookies.get(TOKEN_HEADER)
+      if (token !== undefined) {
+        headers.append(TOKEN_HEADER, token)
+      }
 
       // Make the call
+      let options = { headers, method, body: JSON.stringify(data) };
       fetch(BASE_URL + path, options).then(response => {
+        // Make sure the request went through
+        if (!response.ok) {
+          reject('Something went wrong with the request');
+        }
+
+        // Convert to JSON if requested
         if (noJSON) {
           resolve(response);
         } else {
-          response.json().then(data => resolve(data))
+          response.json().then(resolve, reject);
         }
       })
     });
@@ -39,4 +55,4 @@ class Backend {
 
 }
 
-export { Backend };
+export { Backend, TOKEN_HEADER };

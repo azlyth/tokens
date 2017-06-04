@@ -7,6 +7,13 @@
 }
 
 .menu-container .btn {
-  width: 50px;
+  width: 70px;
   margin: 5px;
+}
+
+.login-modal input { margin-bottom: 15px; }
+.login-modal input + input { margin-bottom: 0; }
+.login-modal .btn {
+  margin-top: 10px;
+  width: 100%;
 }

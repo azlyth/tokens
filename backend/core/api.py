@@ -2,7 +2,13 @@
 # -*- coding: utf-8 -*-
 from flask import request
 from flask_cors import CORS
-from flask_login import LoginManager, current_user, login_user, logout_user
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
 from flask_restful import Resource
 from flask_restless import APIManager, ProcessingException
 
@@ -42,30 +48,38 @@ def setup_api(app):
     manager = APIManager(app.flask_app, flask_sqlalchemy_db=app.db)
     manager.create_api(
         Question,
+        methods=['GET', 'POST', 'PUT', 'DELETE'],
         preprocessors={
             'POST': [authenticate],
-            'PUT': [authenticate],
-            'DELETE': [authenticate]
+            'PUT_SINGLE': [authenticate],
+            'PUT_MANY': [authenticate],
+            'DELETE_SINGLE': [authenticate],
+            'DELETE_MANY': [authenticate],
         },
-        methods=['GET', 'POST', 'PUT', 'DELETE']
     )
     manager.create_api(
         Category,
+        methods=['GET', 'POST', 'PUT', 'DELETE'],
         preprocessors={
             'POST': [authenticate],
-            'PUT': [authenticate],
-            'DELETE': [authenticate]
+            'PUT_SINGLE': [authenticate],
+            'PUT_MANY': [authenticate],
+            'DELETE_SINGLE': [authenticate],
+            'DELETE_MANY': [authenticate],
         },
-        methods=['GET', 'POST', 'PUT', 'DELETE']
     )
     manager.create_api(
         QuestionWeight,
-        preprocessors={'PUT': [authenticate]},
         methods=['PUT'],
+        preprocessors={'PUT': [authenticate]},
     )
 
 
 class AuthResource(Resource):
+
+    @login_required
+    def get(self):
+        return {'data': {'logged_in': True}}
 
     def post(self):
         data = request.get_json()

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, FormControl, Glyphicon, Table } from 'react-bootstrap';
+import { Button, FormControl, Table } from 'react-bootstrap';
 
 import API from './api';
 import NewInstance from './components/NewInstance';
