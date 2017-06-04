@@ -1,3 +1,5 @@
+A web app where answering questions has immediate consequences.
+
 ## Requirements
 - Docker
 - Docker Compose
