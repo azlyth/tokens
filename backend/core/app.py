@@ -29,7 +29,8 @@ class Application:
     def bootstrap(self):
         from .models import User, Question, Category
         if not Question.find_all():
-            User.create('peter', 'asdf')
+            User.create('peter', 'valdez')
+            User.create('sundar', 'raman')
 
             Question.create(text='Is this what you want?')
             Question.create(text='Really?')
