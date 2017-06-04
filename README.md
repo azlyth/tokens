@@ -6,6 +6,6 @@ A web app where answering questions has immediate consequences.
 
 ## Usage
 
-- Be on the Internet
 - Run `docker-compose up`
+- Wait until "Compiled successfully!" appears in the frontend logs
 - Go to [http://localhost:3000](http://localhost:3000)
