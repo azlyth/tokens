@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, FormControl } from 'react-bootstrap';
 
-import API from './api';
-import NewInstance from './components/NewInstance';
+import API from '../api';
+import NewInstance from './NewInstance';
 import './Stats.css';
 
 

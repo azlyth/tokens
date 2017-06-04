@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import {
-  BrowserRouter as Router,
-} from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Grid, Row, Col } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 
-import API from './api';
+import API from '../api';
 import Questions from './Questions';
 import Stats from './Stats';
-import Menu from './components/Menu';
-import store from './store';
+import Menu from './Menu';
+import store from '../store';
 
 
 class App extends Component {
