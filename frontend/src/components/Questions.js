@@ -13,7 +13,7 @@ class Question extends React.Component {
     super(props);
     this.state = {
       text: props.question.text,
-      weights: [],
+      weights: this.props.question.weights,
     };
 
     this.updateQuestionText = this.updateQuestionText.bind(this);
@@ -58,6 +58,7 @@ class Question extends React.Component {
   }
 
   renderWeights() {
+    console.log("Rendering weights:", this.state.weights);
     if (this.props.editing) {
       return (
         <div className="question-editing sm-text">
@@ -176,6 +177,7 @@ class Questions extends React.Component {
       questions: nextProps.questions,
       categories: nextProps.categories,
     });
+    console.log("New questions:", nextProps.questions);
   }
 
   newInstance() {
@@ -212,6 +214,7 @@ class Questions extends React.Component {
 
   render() {
     let questions = this.prepareQuestions();
+    console.log("Rendering questions:", questions);
 
     return (
       <div>

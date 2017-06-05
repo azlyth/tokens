@@ -20,6 +20,13 @@ def authenticate(*args, **kwargs):
         raise ProcessingException(description='Not authenticated', code=401)
 
 
+def weight_postprocessor(model_class):
+    def create_weights(result=None, **kw):
+        instance = model_class.find_one(id=result['id'])
+        instance.create_missing_weights()
+    return create_weights
+
+
 def setup_api(app):
     # Setup CORS
     CORS(app.flask_app)
@@ -56,6 +63,7 @@ def setup_api(app):
             'DELETE_SINGLE': [authenticate],
             'DELETE_MANY': [authenticate],
         },
+        postprocessors={'POST': [weight_postprocessor(Question)]}
     )
     manager.create_api(
         Category,
@@ -67,6 +75,7 @@ def setup_api(app):
             'DELETE_SINGLE': [authenticate],
             'DELETE_MANY': [authenticate],
         },
+        postprocessors={'POST': [weight_postprocessor(Category)]}
     )
     manager.create_api(
         QuestionWeight,

@@ -17,7 +17,9 @@ class Question(Model):
 
     def save(self):
         super(Question, self).save()
+        self.create_missing_weights()
 
+    def create_missing_weights(self):
         # Create any missing weights
         for category in Category.find_all():
             QuestionWeight.find_or_create(
@@ -37,7 +39,9 @@ class Category(Model):
 
     def save(self):
         super(Category, self).save()
+        self.create_missing_weights()
 
+    def create_missing_weights(self):
         # Create any missing weights
         for question in Question.find_all():
             QuestionWeight.find_or_create(
